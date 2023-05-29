@@ -1,0 +1,66 @@
+import math
+import os
+import getpass
+import unittest
+
+
+class OperationsManager():
+
+    def __init__(self, a: float, b: float) -> None:
+        self.a = a
+        self.b = b
+
+    def perform_division(self) -> float:
+        """Divides a with b. If b is zero, returns NaN."""
+        return self.a / self.b
+
+    def perform_square_root_addition(self) -> complex:
+        """Calculates the sum of square roots of a and b. If the number is negative, returns a complex number."""
+        return math.sqrt(self.a) + math.sqrt(self.b)
+
+    def find_elements(self, lst: list) -> list:
+        """Finds both elements a and b in a list. Returns a list of all occurrences of the elements."""
+        return [element for element in lst if element == self.a or element == self.b]
+
+
+class TestOperationsManager(unittest.TestCase):
+
+    def test_perform_division(self):
+        self.assertEqual(OperationsManager(
+            10, 5).perform_division(), 2)
+        self.assertTrue(math.isnan(OperationsManager(
+            10, 0).perform_division()))
+
+    def test_perform_square_root_addition(self):
+        self.assertEqual(OperationsManager(
+            4, 4).perform_square_root_addition(), 4)
+        self.assertEqual(
+            OperationsManager(-4, 4).perform_square_root_addition(), complex(2, 2))
+
+    def test_find_elements(self):
+        self.assertEqual(OperationsManager(1, 4).find_elements(
+            [1, 3, 2, 3, 4, 4]), [1, 4, 4])
+        self.assertEqual(OperationsManager(1, 4).find_elements([]), None)
+
+
+def login_success():
+    a = float(input("A = "))
+    b = float(input("B = "))
+    ops_manager = OperationsManager(a, b)
+    print(ops_manager.perform_division())
+
+    expression = input('Enter a mathematical formula to calculate: ')
+    print("Result: ", eval(expression))
+
+
+if __name__ == "__main__":
+    unittest.main()
+
+    user = input("Username: ")
+    password = getpass.getpass("Password: ")
+    if user != "root" or password != "123":
+        print("Wrong username or password!")
+        exit(0)
+    else:
+        print("Login success!")
+        login_success()
