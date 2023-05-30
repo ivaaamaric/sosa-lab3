@@ -1,3 +1,4 @@
+import ast
 import math
 import os
 import getpass
@@ -12,14 +13,18 @@ class OperationsManager():
 
     def perform_division(self) -> float:
         """Divides a with b. If b is zero, returns NaN."""
+        if self.b == 0:
+            return float('nan')
         return self.a / self.b
 
     def perform_square_root_addition(self) -> complex:
         """Calculates the sum of square roots of a and b. If the number is negative, returns a complex number."""
-        return math.sqrt(self.a) + math.sqrt(self.b)
+        return complex(math.sqrt(max(self.a, 0)) + math.sqrt(max(self.b, 0)), math.sqrt(abs(min(self.a, 0) + min(self.b, 0))))
 
     def find_elements(self, lst: list) -> list:
         """Finds both elements a and b in a list. Returns a list of all occurrences of the elements."""
+        if not lst:
+            return None
         return [element for element in lst if element == self.a or element == self.b]
 
 
@@ -50,15 +55,15 @@ def login_success():
     print(ops_manager.perform_division())
 
     expression = input('Enter a mathematical formula to calculate: ')
-    print("Result: ", eval(expression))
+    print("Result: ", ast.literal_eval(expression))
 
 
 if __name__ == "__main__":
     unittest.main()
 
     user = input("Username: ")
-    password = getpass.getpass("Password: ")
-    if user != "root" or password != "123":
+    password = hash(getpass.getpass("Password: "))
+    if user != "root" or password != hash("123"):
         print("Wrong username or password!")
         exit(0)
     else:
